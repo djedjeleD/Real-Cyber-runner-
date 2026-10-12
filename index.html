@@ -1538,15 +1538,21 @@ window.onload = checkAppVersion;
 
 
 // Lancement de la vérification dès l'ouverture du jeu
-window.onload = checkAppVersion;
+
   // Fonction pour demander l'autorisation des notifications
+// Fonction pour demander l'autorisation des notifications de façon intelligente
 function demanderPermissionNotifications() {
+    // Si on a déjà demandé la permission sur cet appareil, on ne redemande pas
+    if (localStorage.getItem('cr_notif_asked')) return;
+
     // Vérifie si le navigateur/appareil supporte les notifications
     if ("Notification" in window) {
         Notification.requestPermission().then(permission => {
+            // On enregistre qu'on a posé la question
+            localStorage.setItem('cr_notif_asked', 'true');
+            
             if (permission === "granted") {
                 console.log("Notifications autorisées ! 🎉");
-                // On peut envoyer une première notification de bienvenue !
                 envoyerNotificationBienvenue();
             } else {
                 console.log("Notifications refusées ou fermées.");
@@ -1554,6 +1560,9 @@ function demanderPermissionNotifications() {
         });
     }
 }
+
+
+        
 
 // Exemple de notification locale envoyée au joueur
 function envoyerNotificationBienvenue() {
