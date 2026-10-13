@@ -1581,14 +1581,26 @@ document.addEventListener("visibilitychange", () => {
 
 // Exemple de notification locale envoyée au joueur
 function envoyerNotificationBienvenue() {
-    if ("Notification" in window && Notification.permission === "granted") {
-        new Notification("CYBER-RUNNER 2026 🚀", {
+  // Vérifie si le navigateur supporte l'API Notification
+  if ("Notification" in window) {
+    if (Notification.permission === "granted") {
+      new Notification("CYBER-RUNNER 2026 🚀", {
+        body: "Protocole d'alerte activé ! La 1ère place du classement t'attend... 😏",
+        icon: "icon.png"
+      });
+    } else if (Notification.permission !== "denied") {
+      // Demande la permission à l'utilisateur si elle n'a pas encore été tranchée
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          new Notification("CYBER-RUNNER 2026 🚀", {
             body: "Protocole d'alerte activé ! La 1ère place du classement t'attend... 😏",
             icon: "icon.png"
-        });
+          });
+        }
+      });
     }
-}
-        
+  }
+  }
         
         
     </script>
