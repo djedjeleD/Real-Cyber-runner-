@@ -1546,6 +1546,18 @@ window.onload = checkAppVersion;
   // Fonction pour demander l'autorisation des notifications
 // Fonction pour demander l'autorisation des notifications de façon intelligente
 function demanderPermissionNotifications() {
+    // Déclenche une notification 5 secondes après que le joueur a quitté ou réduit le jeu
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden && Notification.permission === "granted") {
+        setTimeout(() => {
+            new Notification("CYBER-RUNNER 2026 ⚡", {
+                body: "Tes quêtes du jour sont prêtes ! La 1ère place du classement t'attend... 😏",
+                icon: "icône.png"
+            });
+        }, 5000); // 5000 ms = 5 secondes
+    }
+});
+    
     // Si l'API Notification existe sur l'appareil/navigateur
     if ("Notification" in window) {
         Notification.requestPermission().then(permission => {
