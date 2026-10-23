@@ -1,25 +1,28 @@
-const CACHE_NAME = 'cyberrunner-v1';
-// Liste des fichiers à sauvegarder pour le mode hors-ligne
-const ASSETS = [
-  './',
-  './index.html',
-  './icon.png' // Ton icône
-];
+const CACHE_NAME = 'cyberrunner-v2';
+const PREVIOUS_CACHE = 'cyberrunner-v1';
+const ASSETS = ['./', './index.html', './icon.png'];
 
-// Installation du Service Worker et mise en cache
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
 });
 
-// Interception des requêtes pour charger le jeu depuis le cache sans internet
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response || fetch(e.request);
-    })
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    Promise.all([
+      caches.delete(PREVIOUS_CACHE),
+      self.clients.claim()
+    ])
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    caches.open(CACHE_NAME).then((cache) =>
+      cache.match(event.request).then((response) => response || fetch(event.request))
+    )
   );
 });

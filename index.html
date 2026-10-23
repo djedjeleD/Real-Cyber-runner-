@@ -92,6 +92,74 @@
         h1 { font-size: clamp(18px, 5.5vw, 22px); margin-bottom: clamp(12px, 4vw, 22px); color: var(--neon); text-shadow: 0 0 12px var(--neon), 0 0 30px rgba(5,247,232,0.4); }
         h2 { font-size: 18px; }
 
+        /* INTRO + choix de langue — drapeaux construits uniquement en CSS */
+        #intro-screen {
+            position: fixed; inset: 0; z-index: 20000; display: flex; align-items: center; justify-content: center;
+            padding: 22px; background:
+                radial-gradient(ellipse at 50% 45%, rgba(5,247,232,.16), transparent 48%),
+                radial-gradient(ellipse at 50% 100%, rgba(192,32,255,.2), transparent 55%), #050208;
+            transition: opacity .55s ease, visibility .55s ease;
+        }
+        #intro-screen.intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .intro-stage { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 22px; opacity: 0; pointer-events: none; }
+        .intro-stage.intro-visible { opacity: 1; pointer-events: auto; }
+        .intro-credit { color: var(--neon); font: 700 clamp(10px, 2.6vw, 15px) Orbitron, monospace; letter-spacing: .24em; margin-bottom: 16px; }
+        .intro-name { color: #fff; font: 900 clamp(30px, 9vw, 72px) Orbitron, monospace; letter-spacing: .11em; text-shadow: 0 0 12px var(--neon), 0 0 38px rgba(5,247,232,.58); }
+        .intro-title { color: #fff; font: 900 clamp(32px, 10vw, 86px) Orbitron, monospace; letter-spacing: .045em; text-shadow: 0 0 14px var(--neon), 0 0 42px rgba(192,32,255,.8); }
+        .intro-credit, .intro-name, .intro-title { white-space: pre-wrap; }
+        .intro-letter { display: inline-block; opacity: 0; animation: introWave .52s cubic-bezier(.2,.7,.25,1) forwards; animation-delay: var(--delay, 0ms); }
+        @keyframes introWave { 0% { opacity: 0; transform: translateY(25px) scale(.78); filter: blur(8px); } 65% { opacity: 1; transform: translateY(-5px) scale(1.08); filter: blur(0); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+        .intro-stage.intro-exit { animation: introFadeOut .62s ease forwards; }
+        @keyframes introFadeOut { to { opacity: 0; transform: scale(1.04); filter: blur(8px); } }
+        #language-picker {
+            position: fixed; inset: 0; z-index: 21000; display: none; align-items: center; justify-content: center;
+            padding: 16px; background: rgba(3,2,9,.99); backdrop-filter: blur(12px); overflow-y: auto;
+        }
+        #language-picker.visible { display: flex; animation: overlayIn .35s ease-out; }
+        .language-card { width: min(100%, 720px); max-height: 94vh; overflow-y: auto; padding: clamp(18px, 4vw, 30px); border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(160deg, rgba(13,12,32,.98), rgba(27,10,43,.98)); box-shadow: 0 0 50px rgba(5,247,232,.18); text-align: center; }
+        .language-title { margin: 0 0 8px; color: var(--neon); font: 900 clamp(18px, 5vw, 28px) Orbitron, monospace; letter-spacing: .08em; }
+        .language-subtitle { margin: 0 0 20px; color: #aaa; font-size: 12px; letter-spacing: .12em; }
+        .language-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 9px; }
+        .language-option { display: flex; align-items: center; gap: 11px; min-height: 50px; padding: 9px 11px; color: #fff; text-align: left; cursor: pointer; border: 1px solid rgba(255,255,255,.13); border-radius: 11px; background: rgba(255,255,255,.035); transition: .18s; }
+        .language-option:hover, .language-option:focus-visible { border-color: var(--neon); background: rgba(5,247,232,.1); box-shadow: 0 0 15px rgba(5,247,232,.13); outline: none; transform: translateY(-1px); }
+        .language-option.selected { border-color: var(--gold); box-shadow: inset 0 0 12px rgba(255,203,43,.08); }
+        .language-name { font-size: 13px; font-weight: 700; }
+        .css-flag { position: relative; display: inline-block; flex: 0 0 30px; width: 30px; height: 20px; overflow: hidden; border-radius: 3px; box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 2px 5px #000; background: #ddd; }
+        .flag-fr { background: linear-gradient(90deg,#002395 0 33.33%,#fff 33.33% 66.66%,#ed2939 66.66%); }
+        .flag-gb { background: linear-gradient(90deg,transparent 42%,#fff 42% 58%,transparent 58%),linear-gradient(0deg,transparent 36%,#fff 36% 64%,transparent 64%),linear-gradient(90deg,transparent 46%,#c8102e 46% 54%,transparent 54%),linear-gradient(0deg,transparent 42%,#c8102e 42% 58%,transparent 58%),linear-gradient(33deg,transparent 44%,#fff 44% 48%,#c8102e 48% 52%,#fff 52% 56%,transparent 56%),linear-gradient(-33deg,#012169 42%,#fff 42% 47%,#c8102e 47% 53%,#fff 53% 58%,#012169 58%); }
+        .flag-es { background: linear-gradient(#aa151b 0 25%,#f1bf00 25% 75%,#aa151b 75%); }
+        .flag-de { background: linear-gradient(#000 0 33.33%,#dd0000 33.33% 66.66%,#ffce00 66.66%); }
+        .flag-it { background: linear-gradient(90deg,#009246 0 33.33%,#fff 33.33% 66.66%,#ce2b37 66.66%); }
+        .flag-pt { background: linear-gradient(90deg,#046a38 0 40%,#da291c 40%); }
+        .flag-nl { background: linear-gradient(#ae1c28 0 33.33%,#fff 33.33% 66.66%,#21468b 66.66%); }
+        .flag-pl { background: linear-gradient(#fff 0 50%,#dc143c 50%); }
+        .flag-ru { background: linear-gradient(#fff 0 33.33%,#0039a6 33.33% 66.66%,#d52b1e 66.66%); }
+        .flag-jp { background: #fff; }
+        .flag-jp::after { content: ""; position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #bc002d; left: 10px; top: 5px; }
+        .flag-kr { background: #fff; }
+        .flag-kr::after { content: ""; position: absolute; width: 9px; height: 9px; border-radius: 50%; left: 10px; top: 5px; background: linear-gradient(#cd2e3a 0 50%,#0047a0 50%); }
+        .flag-cn { background: #de2910; }
+        .flag-cn::after { content: ""; position: absolute; width: 6px; height: 6px; left: 5px; top: 4px; background: #ffde00; clip-path: polygon(50% 0,61% 36%,100% 36%,69% 58%,80% 100%,50% 73%,20% 100%,31% 58%,0 36%,39% 36%); }
+        .flag-ar { background: #006c35; }
+        .flag-ar::after { content: ""; position: absolute; left: 6px; top: 13px; width: 18px; height: 2px; border-radius: 2px; background: #fff; }
+        .flag-in { background: linear-gradient(#ff9933 0 33.33%,#fff 33.33% 66.66%,#138808 66.66%); }
+        .flag-in::after { content: ""; position: absolute; width: 7px; height: 7px; left: 11px; top: 6px; border: 1px solid #000080; border-radius: 50%; }
+        .flag-tr { background: #e30a17; }
+        .flag-tr::before { content: ""; position: absolute; width: 9px; height: 9px; left: 6px; top: 5px; border-radius: 50%; background: #fff; }
+        .flag-tr::after { content: ""; position: absolute; width: 7px; height: 7px; left: 9px; top: 5px; border-radius: 50%; background: #e30a17; box-shadow: 8px 2px 0 -1px #fff; }
+        .flag-ua { background: linear-gradient(#0057b7 0 50%,#ffd700 50%); }
+        .flag-id { background: linear-gradient(#ce1126 0 50%,#fff 50%); }
+        .flag-se { background: linear-gradient(90deg,transparent 0 30%,#fecc00 30% 42%,transparent 42%),linear-gradient(#006aa7 0 42%,#fecc00 42% 58%,#006aa7 58%); }
+        .flag-gr { background: repeating-linear-gradient(#0d5eaf 0 2px,#fff 2px 4px); }
+        .flag-gr::before { content: ""; position: absolute; left: 0; top: 0; width: 10px; height: 10px; background: linear-gradient(90deg,transparent 0 38%,#fff 38% 62%,transparent 62%),linear-gradient(transparent 0 38%,#fff 38% 62%,transparent 62%),#0d5eaf; }
+        .flag-vn { background: #da251d; }
+        .flag-vn::after { content: ""; position: absolute; width: 9px; height: 9px; left: 10px; top: 5px; background: #ff0; clip-path: polygon(50% 0,61% 36%,100% 36%,69% 58%,80% 100%,50% 73%,20% 100%,31% 58%,0 36%,39% 36%); }
+        .flag-br { background: #009739; }
+        .flag-br::before { content: ""; position: absolute; left: 7px; top: 3px; width: 16px; height: 14px; background: #ffdf00; clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%); }
+        .flag-br::after { content: ""; position: absolute; left: 12px; top: 7px; width: 7px; height: 7px; border-radius: 50%; background: #002776; }
+        @media (max-width: 420px) { .language-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; } .language-option { min-height: 46px; padding: 7px; } .language-name { font-size: 12px; } }
+        @media (prefers-reduced-motion: reduce) { .intro-letter { animation-duration: .01ms; } .intro-stage.intro-exit { animation-duration: .01ms; } }
+
         .btn {
             width: 100%; padding: clamp(10px, 3.5vw, 15px); margin: clamp(5px, 2vw, 8px) 0; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
             border: 1px solid #fff; color: #fff; border-radius: 12px; font-weight: 700; cursor: pointer;
@@ -1079,6 +1147,22 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
 </head>
 <body>
     <div id="quest-toast-container"></div>
+    <div id="intro-screen" aria-label="CYBER-RUNNER">
+        <section id="intro-credit-stage" class="intro-stage" aria-hidden="true">
+            <div class="intro-credit" data-wave-text="performet by">performet by</div>
+            <div class="intro-name" data-wave-text="DJEDJELEDJ">DJEDJELEDJ</div>
+        </section>
+        <section id="intro-title-stage" class="intro-stage" aria-hidden="true">
+            <div class="intro-title" data-wave-text="CYBER-RUNNER">CYBER-RUNNER</div>
+        </section>
+    </div>
+    <div id="language-picker" role="dialog" aria-modal="true" aria-labelledby="language-picker-title">
+        <div class="language-card">
+            <h2 class="language-title" id="language-picker-title">CHOISIS TA LANGUE / CHOOSE YOUR LANGUAGE</h2>
+            <p class="language-subtitle" id="language-picker-subtitle">SÉLECTIONNE UN PAYS — SELECT A LANGUAGE</p>
+            <div class="language-grid" id="language-grid"></div>
+        </div>
+    </div>
 
 <div id="app-root">
     <canvas id="canvas"></canvas>
@@ -1149,15 +1233,15 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
     <div id="floating-backdrop" onclick="closeAllFloating()"></div>
 
     <div id="ui-layer">
-        <div class="stat-box">LVL <span id="lvl-val">1</span><br><span id="xp-val">0</span> XP</div>
-        <div id="cash-stat-box" class="stat-box" style="border-color:var(--green); box-shadow:0 0 16px rgba(41,255,158,0.15);"><span class="cc-icon"><span class="cc"><span class="cc-mod cc-gold"><span class="cc-c"><span class="h1"></span><span class="h2"></span><span class="v"></span></span></span><span class="cc-energy"><span class="cc-ebar"></span><span class="cc-ecore"></span><span class="cc-ebar"></span></span><span class="cc-mod cc-black"><span class="cc-c"><span class="h1"></span><span class="h2"></span><span class="v"></span></span></span><span class="cc-shine"></span></span></span>CASH<br><span id="c-val">0</span></div>
-        <div class="stat-box" style="border-color:var(--gold); box-shadow:0 0 16px rgba(255,203,43,0.15);">BEST<br><span id="b-val">0</span></div>
+            <div class="stat-box"><span data-i18n="level">LVL</span> <span id="lvl-val">1</span><br><span id="xp-val">0</span> XP</div>
+        <div id="cash-stat-box" class="stat-box" style="border-color:var(--green); box-shadow:0 0 16px rgba(41,255,158,0.15);"><span class="cc-icon"><span class="cc"><span class="cc-mod cc-gold"><span class="cc-c"><span class="h1"></span><span class="h2"></span><span class="v"></span></span></span><span class="cc-energy"><span class="cc-ebar"></span><span class="cc-ecore"></span><span class="cc-ebar"></span></span><span class="cc-mod cc-black"><span class="cc-c"><span class="h1"></span><span class="h2"></span><span class="v"></span></span></span><span class="cc-shine"></span></span></span><span data-i18n="cash">CASH</span><br><span id="c-val">0</span></div>
+        <div class="stat-box" style="border-color:var(--gold); box-shadow:0 0 16px rgba(255,203,43,0.15);"><span data-i18n="best">BEST</span><br><span id="b-val">0</span></div>
     </div>
     
     <div id="powerup-ui">
-        <div id="hud-shd" class="p-hud" style="background:var(--blue); color:#fff;">BOUCLIER ACTIF</div>
-        <div id="hud-ovr" class="p-hud" style="background:var(--purp); color:#fff;">SURCHAUFFE LASER</div>
-        <div id="hud-mag" class="p-hud" style="background:var(--gold); color:#000;">AIMANT CYBER</div>
+        <div id="hud-shd" class="p-hud" style="background:var(--blue); color:#fff;" data-i18n="shieldActive">BOUCLIER ACTIF</div>
+        <div id="hud-ovr" class="p-hud" style="background:var(--purp); color:#fff;" data-i18n="laserOverheat">SURCHAUFFE LASER</div>
+        <div id="hud-mag" class="p-hud" style="background:var(--gold); color:#000;" data-i18n="cyberMagnet">AIMANT CYBER</div>
     </div>
 
     <div id="boss-ui"></div>
@@ -1165,30 +1249,30 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
     <div id="tuto-ui">
         <div id="tuto-msg-box" class="box" style="border-color:var(--neon); box-shadow:0 0 20px rgba(0,255,255,0.2);">
             <p id="tuto-text" style="font-size:13px; line-height:1.6; margin-bottom:20px; text-align:left;"></p>
-            <button class="btn" style="border-color:var(--neon); margin:0;" onclick="nextTutoStep()">SUIVANT</button>
+            <button class="btn" style="border-color:var(--neon); margin:0;" onclick="nextTutoStep()" data-i18n="next">SUIVANT</button>
         </div>
         <div id="tuto-choices" class="box" style="display:none; border-color:var(--gold); max-width:360px;">
-            <h3 style="color:var(--gold); margin-top:0;">FIN DU BRIEFING</h3>
-            <button class="btn" style="border-color:var(--red); color:var(--red); font-size:12px; padding:12px;" onclick="restartTuto()">Refaire le tutoriel</button>
-            <button class="btn" style="border-color:var(--green); color:var(--green); font-size:12px; padding:12px;" onclick="finishTuto()">Lancer la simulation</button>
+            <h3 style="color:var(--gold); margin-top:0;" data-i18n="briefingEnd">FIN DU BRIEFING</h3>
+            <button class="btn" style="border-color:var(--red); color:var(--red); font-size:12px; padding:12px;" onclick="restartTuto()" data-i18n="restartTutorial">Refaire le tutoriel</button>
+            <button class="btn" style="border-color:var(--green); color:var(--green); font-size:12px; padding:12px;" onclick="finishTuto()" data-i18n="launchSimulation">Lancer la simulation</button>
         </div>
     </div>
 
     <div id="p-gameover">
         <div id="go-boss-bg"></div> 
         <div id="go-box">
-            <div id="go-title">UNITÉ DÉCONNECTÉE</div>
+            <div id="go-title" data-i18n="unitDisconnected">UNITÉ DÉCONNECTÉE</div>
             
             <div id="go-stats-list">
-                <div><span>SCORE FINAL</span> <b id="go-score">0000000</b></div>
-                <div><span>RECORD PERSONNEL</span> <b id="go-best">0000000</b></div>
-                <div style="border-top:1px solid #333; margin-top:10px; padding-top:10px;"><span>XP ACQUIS</span> <b style="color:var(--neon)" id="go-xp">+0</b></div>
-                <div><span>CRÉDITS ACQUIS</span> <b style="color:var(--green)" id="go-cash">+0</b></div>
-                <div id="go-phoenix-row" style="display:none; border-top:1px solid #333; margin-top:10px; padding-top:10px;"><span>RENAISSANCES</span> <b style="color:var(--gold)" id="go-phoenix-count">0</b></div>
+                <div><span data-i18n="finalScore">SCORE FINAL</span> <b id="go-score">0000000</b></div>
+                <div><span data-i18n="personalRecord">RECORD PERSONNEL</span> <b id="go-best">0000000</b></div>
+                <div style="border-top:1px solid #333; margin-top:10px; padding-top:10px;"><span data-i18n="xpGained">XP ACQUIS</span> <b style="color:var(--neon)" id="go-xp">+0</b></div>
+                <div><span data-i18n="cashGained">CRÉDITS ACQUIS</span> <b style="color:var(--green)" id="go-cash">+0</b></div>
+                <div id="go-phoenix-row" style="display:none; border-top:1px solid #333; margin-top:10px; padding-top:10px;"><span data-i18n="revives">RENAISSANCES</span> <b style="color:var(--gold)" id="go-phoenix-count">0</b></div>
             </div>
             
-            <button id="go-btn-retry" class="btn" onclick="replayLastRun()">INITIER NOUVELLE SIMULATION</button>
-            <button id="go-btn-menu" class="btn" onclick="goGameOverToMenu()">RETOUR AU HUB CENTRAL</button>
+            <button id="go-btn-retry" class="btn" onclick="replayLastRun()" data-i18n="newSimulation">INITIER NOUVELLE SIMULATION</button>
+            <button id="go-btn-menu" class="btn" onclick="goGameOverToMenu()" data-i18n="returnHub">RETOUR AU HUB CENTRAL</button>
         </div>
     </div>
 
@@ -1210,17 +1294,17 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
 
     <div id="run-mode-overlay" onclick="if(event.target === this) closeRunModePicker()">
         <div class="run-mode-card">
-            <h2>CHOIX DE SIMULATION</h2>
-            <div class="run-mode-subtitle">SÉLECTIONNE TON PROTOCOLE DE RUN</div>
+            <h2 data-i18n="runModeTitle">CHOIX DE SIMULATION</h2>
+            <div class="run-mode-subtitle" data-i18n="runModeSubtitle">SÉLECTIONNE TON PROTOCOLE DE RUN</div>
             <button class="run-mode-option basic" onclick="chooseRunMode('basic')">
                 <span class="mode-icon"><b><i class="ic-tri"></i></b></span>
-                <span><strong>PARTIE BASIQUE</strong><small>Joue librement et améliore ton record personnel.</small></span>
+                <span><strong data-i18n="basicRun">PARTIE BASIQUE</strong><small data-i18n="basicDescription">Joue librement et améliore ton record personnel.</small></span>
             </button>
             <button class="run-mode-option ranked" onclick="chooseRunMode('ranked')">
                 <span class="mode-icon"><b>CP</b></span>
-                <span><strong>PARTIE CLASSÉE</strong><small>Ton score devient des points Cyber-Classé et peut débloquer un nouveau rang.</small></span>
+                <span><strong data-i18n="rankedRun">PARTIE CLASSÉE</strong><small data-i18n="rankedDescription">Ton score devient des points Cyber-Classé et peut débloquer un nouveau rang.</small></span>
             </button>
-            <button class="run-mode-cancel" onclick="closeRunModePicker()">ANNULER</button>
+            <button class="run-mode-cancel" onclick="closeRunModePicker()" data-i18n="cancel">ANNULER</button>
         </div>
     </div>
 
@@ -1285,19 +1369,19 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
 
     <div id="p-log" class="page active">
         <div class="box">
-            <h1>CYBER-RUNNER 2026</h1>
-            <div style="font-size:10px; letter-spacing:3px; color:var(--purp); margin:-14px 0 20px; opacity:0.85;">PROTOCOLE PHÉNIX</div>
+            <h1 data-i18n="gameTitle">CYBER-RUNNER 2026</h1>
+            <div style="font-size:10px; letter-spacing:3px; color:var(--purp); margin:-14px 0 20px; opacity:0.85;" data-i18n="phoenixProtocol">PROTOCOLE PHÉNIX</div>
             <div id="login-tuto" class="tuto-box">
-                <div class="tuto-title">TUTO : TON COMPTE CYBER</div>
-                <div class="tuto-step" id="lt-1"><b>1</b><span>Choisis ton ID pilote (3 à 16 caractères).</span></div>
-                <div class="tuto-step" id="lt-2"><b>2</b><span>Invente un mot de passe et retiens-le.</span></div>
-                <div class="tuto-step" id="lt-3"><b>3</b><span>Appuie sur IDENTIFICATION. Nouvel ID : ton compte est créé. ID existant : tu te reconnectes.</span></div>
-                <button class="tuto-skip" onclick="setLoginTuto(false)">PASSER LE TUTO</button>
+                <div class="tuto-title" data-i18n="accountTutorial">TUTO : TON COMPTE CYBER</div>
+                <div class="tuto-step" id="lt-1"><b>1</b><span data-i18n="tutorialStepOne">Choisis ton ID pilote (3 à 16 caractères).</span></div>
+                <div class="tuto-step" id="lt-2"><b>2</b><span data-i18n="tutorialStepTwo">Invente un mot de passe et retiens-le.</span></div>
+                <div class="tuto-step" id="lt-3"><b>3</b><span data-i18n="tutorialStepThree">Appuie sur IDENTIFICATION. Nouvel ID : ton compte est créé. ID existant : tu te reconnectes.</span></div>
+                <button class="tuto-skip" onclick="setLoginTuto(false)" data-i18n="skipTutorial">PASSER LE TUTO</button>
             </div>
-            <button id="login-tuto-open" class="tuto-open" style="display:none" onclick="setLoginTuto(true)">COMMENT SE CONNECTER ?</button>
-            <div class="tuto-wrap" id="tw-1"><input type="text" id="p-name" class="input-f" placeholder="ID PILOTE"><i class="tuto-ptr"></i></div>
-            <div class="tuto-wrap" id="tw-2"><input type="password" id="p-pass" class="input-f" placeholder="MOT DE PASSE"><i class="tuto-ptr"></i></div>
-            <div class="tuto-wrap" id="tw-3"><button class="btn" style="border-color:var(--neon); color:var(--neon);" onclick="login()">IDENTIFICATION</button><i class="tuto-ptr"></i></div>
+            <button id="login-tuto-open" class="tuto-open" style="display:none" onclick="setLoginTuto(true)" data-i18n="loginHelp">COMMENT SE CONNECTER ?</button>
+            <div class="tuto-wrap" id="tw-1"><input type="text" id="p-name" class="input-f" placeholder="ID PILOTE" data-i18n-placeholder="pilotId"><i class="tuto-ptr"></i></div>
+            <div class="tuto-wrap" id="tw-2"><input type="password" id="p-pass" class="input-f" placeholder="MOT DE PASSE" data-i18n-placeholder="password"><i class="tuto-ptr"></i></div>
+            <div class="tuto-wrap" id="tw-3"><button class="btn" style="border-color:var(--neon); color:var(--neon);" onclick="login()" data-i18n="identify">IDENTIFICATION</button><i class="tuto-ptr"></i></div>
         </div>
     </div>
 
@@ -1307,44 +1391,45 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
         
         <!-- BOUTON DES QUÊTES AU-DESSUS DU PSEUDO -->
         <button id="btn-daily-quests" class="btn-quest-badge" onclick="openQuestsModal(event)">
-            <span class="ic-wrap"><i class="ic-quest"></i></span> QUÊTES DU JOUR <span id="quest-timer-badge" class="timer-badge">--h--m</span>
+            <span class="ic-wrap"><i class="ic-quest"></i></span> <span data-i18n="dailyQuests">QUÊTES DU JOUR</span> <span id="quest-timer-badge" class="timer-badge">--h--m</span>
         </button>
         <br>
         <button id="btn-battlepass" class="btn-bp-badge" onclick="openBattlePass(event)">
-            <span class="ic-wrap"><i class="ic-pass"></i></span> PASS DE COMBAT <span class="timer-badge" id="bp-tier-badge">Palier 1/50</span>
+            <span class="ic-wrap"><i class="ic-pass"></i></span> <span data-i18n="battlePass">PASS DE COMBAT</span> <span class="timer-badge" id="bp-tier-badge">Palier 1/50</span>
         </button>
         <br>
         <button id="btn-friends" class="btn-friends-badge" onclick="openFriendsModal(event)">
-            <span class="ic-wrap"><i class="ic-globe"></i></span> RÉSEAU ALLIÉS <span id="friends-req-badge" style="display:none;"></span>
+            <span class="ic-wrap"><i class="ic-globe"></i></span> <span data-i18n="alliedNetwork">RÉSEAU ALLIÉS</span> <span id="friends-req-badge" style="display:none;"></span>
         </button>
         <br>
         <button id="btn-ranked" class="btn-ranked-badge" onclick="openRankedPanel(event)">
-            <span>◈</span> CYBER-CLASSÉ <span id="ranked-badge-label" class="ranked-pill">ORDURES I</span><span id="ranked-claim-badge" class="claim-dot" style="display:none">1</span>
+            <span>◈</span> <span data-i18n="ranked">CYBER-CLASSÉ</span> <span id="ranked-badge-label" class="ranked-pill">ORDURES I</span><span id="ranked-claim-badge" class="claim-dot" style="display:none">1</span>
         </button>
 
-        <h2 id="welcome-msg">BIENVENUE</h2>
+        <h2 id="welcome-msg" data-i18n="welcome">BIENVENUE</h2>
         <div id="daily-msg" style="font-size:11px; color:var(--gold); margin-bottom:15px; min-height:15px;"></div>
-        <button class="btn" style="border-color:var(--green); color:var(--green);" onclick="openRunModePicker()">LANCER LE RUN</button>
-        <button class="btn" style="border-color:var(--gold); color:var(--gold);" onclick="openShop(event)">BOUTIQUE & STATS</button>
-        <button class="btn" style="border-color:var(--purp); color:var(--purp);" onclick="openLeaderboard(event)">CLASSEMENT MONDIAL</button>
+        <button class="btn" style="border-color:var(--green); color:var(--green);" onclick="openRunModePicker()" data-i18n="startRun">LANCER LE RUN</button>
+        <button class="btn" style="border-color:var(--gold); color:var(--gold);" onclick="openShop(event)" data-i18n="shopStats">BOUTIQUE &amp; STATS</button>
+        <button class="btn" style="border-color:var(--purp); color:var(--purp);" onclick="openLeaderboard(event)" data-i18n="leaderboard">CLASSEMENT MONDIAL</button>
     </div>
 </div>
 
 
     <div id="p-settings" class="page">
         <div class="box">
-            <h2 style="color:var(--gold)">RÉGLAGES</h2>
-            <button class="btn" id="btn-music-toggle" onclick="toggleMusic()">MUSIQUE : ON</button>
+            <h2 id="settings-title" style="color:var(--gold)" data-i18n="settings">RÉGLAGES</h2>
+            <button class="btn" id="btn-language-settings" onclick="openLanguagePicker('settings')">LANGUE : FRANÇAIS</button>
+            <button class="btn" id="btn-music-toggle" onclick="toggleMusic()" data-i18n="musicOn">MUSIQUE : ON</button>
             <div style="margin: 15px 0; text-align: left; font-size: 12px; color: var(--neon);">
-                VOLUME : <span id="vol-display">50%</span>
+                <span data-i18n="volume">VOLUME :</span> <span id="vol-display">50%</span>
                 <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; margin-top: 10px;" oninput="changeVolume(this.value)">
             </div>
-            <button class="btn" style="border-color:var(--gold); color:var(--gold);" onclick="askRename()">SE RENOMMER — 5 000 <span class="cc-icon"><span class="cc"><span class="cc-mod cc-gold"><span class="cc-c"><span class="h1"></span><span class="h2"></span><span class="v"></span></span></span><span class="cc-energy"><span class="cc-ebar"></span><span class="cc-ecore"></span><span class="cc-ebar"></span></span><span class="cc-mod cc-black"><span class="cc-c"><span class="h1"></span><span class="h2"></span><span class="v"></span></span></span><span class="cc-shine"></span></span></span></button>
-            <button class="btn" style="border-color:var(--purp); color:var(--purp); display:flex; align-items:center; justify-content:center; gap:8px;" id="btn-card-config" onclick="openBattleConfig()"><span class="ic-wrap"><i class="ic-card"></i></span> CARTE DE COMBAT</button>
+            <button class="btn" style="border-color:var(--gold); color:var(--gold);" onclick="askRename()"><span data-i18n="rename">SE RENOMMER</span> — 5 000 <span class="cc-icon"><span class="cc"><span class="cc-mod cc-gold"><span class="cc-c"><span class="h1"></span><span class="h2"></span><span class="v"></span></span></span><span class="cc-energy"><span class="cc-ebar"></span><span class="cc-ecore"></span><span class="cc-ebar"></span></span><span class="cc-mod cc-black"><span class="cc-c"><span class="h1"></span><span class="h2"></span><span class="v"></span></span></span><span class="cc-shine"></span></span></span></button>
+            <button class="btn" style="border-color:var(--purp); color:var(--purp); display:flex; align-items:center; justify-content:center; gap:8px;" id="btn-card-config" onclick="openBattleConfig()"><span class="ic-wrap"><i class="ic-card"></i></span> <span data-i18n="battleCard">CARTE DE COMBAT</span></button>
             <div id="hint-card" class="hint-inline" style="display:none"><i class="hint-ptr up"></i><div class="hint-bubble"><b>NOUVEAUTÉ !</b><br>Configure rapidement ta carte de combat ! Le monde attend de tes performances.</div></div>
-            <button class="btn" id="btn-notif-toggle" style="border-color:var(--neon); color:var(--neon);" onclick="toggleNotifications()">ACTIVER LES NOTIFICATIONS</button>
-            <button class="btn" style="border-color:var(--red); color:var(--red);" onclick="askDisconnect()">DÉCONNEXION</button>
-            <button class="btn" onclick="go('p-menu')">RETOUR</button>
+            <button class="btn" id="btn-notif-toggle" style="border-color:var(--neon); color:var(--neon);" onclick="toggleNotifications()" data-i18n="enableNotifications">ACTIVER LES NOTIFICATIONS</button>
+            <button class="btn" style="border-color:var(--red); color:var(--red);" onclick="askDisconnect()" data-i18n="disconnect">DÉCONNEXION</button>
+            <button class="btn" onclick="go('p-menu')" data-i18n="back">RETOUR</button>
         </div>
     </div>
 
@@ -1626,7 +1711,7 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
 
         function toggleMusic() {
             musicPlaying = !musicPlaying;
-            document.getElementById('btn-music-toggle').innerText = musicPlaying ? "MUSIQUE : ON" : "MUSIQUE : OFF";
+            document.getElementById('btn-music-toggle').innerText = gameText(musicPlaying ? "musicOn" : "musicOff");
             if(!musicPlaying) clearInterval(musicLoop); else startMusic();
         }
 
@@ -2332,6 +2417,7 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
         }
 
         function loadAccount(name, data) {
+            try { localStorage.setItem('cr_last_user', name); } catch (e) {}
             currentUser = name; money = data.cash; hiScore = data.best; xp = data.xp; activeSkin = data.skin; unlocked = data.unl;
             upgrades = data.upg || { speed: 1, magnet: 0, shield: 0 };
             bpClaimed = data.bp || [];
@@ -2347,7 +2433,7 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
             selectedRunMode = localStorage.getItem('cr_run_mode_' + name) === 'ranked' ? 'ranked' : 'basic';
             isRankedMatch = false;
             lastKnownMoney = null; // évite un faux effet "gain" au login avec l'ancien solde
-            document.getElementById('welcome-msg').innerText = "PILOTE : " + name; startMusic(); updateUI(); go('p-menu'); updateRankedClaimBadge();
+            document.getElementById('welcome-msg').innerText = gameText("pilot") + " : " + name; startMusic(); updateUI(); go('p-menu'); updateRankedClaimBadge();
             updateRankedUI();
         
             initDailyQuests();
@@ -2406,7 +2492,8 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
             if (runMode) { localStorage.setItem('cr_run_mode_' + raw, runMode); localStorage.removeItem('cr_run_mode_' + oldUser); }
 
             currentUser = raw;
-            document.getElementById('welcome-msg').innerText = "PILOTE : " + raw;
+            try { localStorage.setItem('cr_last_user', raw); } catch (e) {}
+            document.getElementById('welcome-msg').innerText = gameText("pilot") + " : " + raw;
             saveData(); updateUI();
             closeRenameOverlay();
             showBrawlAlert("NOUVEL ID ACTIVÉ : " + raw, true);
@@ -2420,6 +2507,7 @@ canvas.bc-sq { display: block; position: relative; width: 108px; height: 108px; 
         }
         
         function triggerGlitch() {
+            try { localStorage.removeItem('cr_last_user'); } catch (e) {}
             closeConfirm(); clearInterval(musicLoop);
             const gs = document.getElementById('glitch-screen'); const gt = document.getElementById('glitch-text');
             gs.style.display = 'flex'; gs.style.background = '#000'; gs.classList.add('is-glitching'); playSfx(50, 'sawtooth', 1.0, true); 
@@ -2851,10 +2939,10 @@ function closeFloatingPanel(id) {
         function updateTutoUI() {
             const ui = document.getElementById('tuto-ui'); const txt = document.getElementById('tuto-text'); const box = document.getElementById('tuto-msg-box'); const choices = document.getElementById('tuto-choices');
             ui.style.display = "flex"; box.style.display = "block"; choices.style.display = "none";
-            if(tutoStep === 1) { txt.innerHTML = "<b>MOUVEMENT :</b> Glisse ton doigt pour contrôler le runner."; obstacles = []; boss.active = false;
-            } else if(tutoStep === 2) { txt.innerHTML = "<b>OBSTACLES :</b> Évite impérativement les structures rouges."; obstacles = [{x: w * 0.65, y: h / 2 - 60, w: 60, h: 60, s: 0, c: 'red'}];
+            if(tutoStep === 1) { txt.innerHTML = "<b>" + gameText("movementTitle") + ":</b> " + gameText("movementText"); obstacles = []; boss.active = false;
+            } else if(tutoStep === 2) { txt.innerHTML = "<b>" + gameText("obstaclesTitle") + ":</b> " + gameText("obstaclesText"); obstacles = [{x: w * 0.65, y: h / 2 - 60, w: 60, h: 60, s: 0, c: 'red'}];
 
-            } else if(tutoStep === 3) { txt.innerHTML = "<b>BOSS OMNI :</b> Reste aligné sur le Noyau pour déclencher le laser automatique."; obstacles = []; boss.active = true; boss.hp = 100; boss.x = w - 160; boss.y = h / 2;
+            } else if(tutoStep === 3) { txt.innerHTML = "<b>" + gameText("omniBossTitle") + ":</b> " + gameText("omniBossText"); obstacles = []; boss.active = true; boss.hp = 100; boss.x = w - 160; boss.y = h / 2;
             } else if(tutoStep === 4) { box.style.display = "none"; choices.style.display = "flex"; }
         }
         function nextTutoStep() { tutoStep++; updateTutoUI(); }
@@ -4248,20 +4336,21 @@ function getNotifSW() {
 function refreshNotifBtn() {
     const b = document.getElementById('btn-notif-toggle');
     if (!b) return;
+    const text = function (key, fallback) { return typeof gameText === 'function' ? gameText(key) : fallback; };
     if (!notifSupported()) {
-        b.innerText = window.isSecureContext === false ? 'OUVRE LE JEU VIA LE LIEN HTTPS' : 'NOTIFICATIONS NON SUPPORTÉES';
+        b.innerText = window.isSecureContext === false ? text('httpsNotifications', 'OUVRE LE JEU VIA LE LIEN HTTPS') : text('notificationsUnsupported', 'NOTIFICATIONS NON SUPPORTÉES');
         b.style.borderColor = '#888'; b.style.color = '#888';
     } else if (Notification.permission === 'denied') {
-        b.innerText = 'BLOQUÉES : RÉINITIALISE LE SITE';
+        b.innerText = text('notificationsBlocked', 'BLOQUÉES : RÉINITIALISE LE SITE');
         b.style.borderColor = 'var(--red)'; b.style.color = 'var(--red)';
     } else if (Notification.permission === 'granted' && notifWanted()) {
-        b.innerText = 'NOTIFICATIONS : ON';
+        b.innerText = text('notificationsOn', 'NOTIFICATIONS : ON');
         b.style.borderColor = 'var(--green)'; b.style.color = 'var(--green)';
     } else if (Notification.permission === 'granted') {
-        b.innerText = 'NOTIFICATIONS : OFF';
+        b.innerText = text('notificationsOff', 'NOTIFICATIONS : OFF');
         b.style.borderColor = 'var(--gold)'; b.style.color = 'var(--gold)';
     } else {
-        b.innerText = 'ACTIVER LES NOTIFICATIONS';
+        b.innerText = text('enableNotifications', 'ACTIVER LES NOTIFICATIONS');
         b.style.borderColor = 'var(--neon)'; b.style.color = 'var(--neon)';
     }
 }
@@ -4390,6 +4479,425 @@ function updateShopUI() {
     });
 }
 
+    </script>
+    <script>
+    (function () {
+        const LANGUAGES = [
+            { code: 'fr', name: 'Français', flag: 'fr' },
+            { code: 'en', name: 'English', flag: 'gb' },
+            { code: 'es', name: 'Español', flag: 'es' },
+            { code: 'de', name: 'Deutsch', flag: 'de' },
+            { code: 'it', name: 'Italiano', flag: 'it' },
+            { code: 'pt', name: 'Português', flag: 'pt' },
+            { code: 'pt-BR', name: 'Português (Brasil)', flag: 'br' },
+            { code: 'nl', name: 'Nederlands', flag: 'nl' },
+            { code: 'pl', name: 'Polski', flag: 'pl' },
+            { code: 'ru', name: 'Русский', flag: 'ru' },
+            { code: 'ja', name: '日本語', flag: 'jp' },
+            { code: 'ko', name: '한국어', flag: 'kr' },
+            { code: 'zh', name: '简体中文', flag: 'cn' },
+            { code: 'ar', name: 'العربية', flag: 'ar' },
+            { code: 'hi', name: 'हिन्दी', flag: 'in' },
+            { code: 'tr', name: 'Türkçe', flag: 'tr' },
+            { code: 'uk', name: 'Українська', flag: 'ua' },
+            { code: 'id', name: 'Bahasa Indonesia', flag: 'id' },
+            { code: 'sv', name: 'Svenska', flag: 'se' },
+            { code: 'el', name: 'Ελληνικά', flag: 'gr' },
+            { code: 'vi', name: 'Tiếng Việt', flag: 'vn' }
+        ];
+        const EN = {
+            gameTitle: 'CYBER-RUNNER 2026', phoenixProtocol: 'PHOENIX PROTOCOL',
+            accountTutorial: 'CYBER ACCOUNT TUTORIAL', tutorialStepOne: 'Choose your pilot ID (3–16 characters).',
+            tutorialStepTwo: 'Create a password and remember it.',
+            tutorialStepThree: 'Press IDENTIFY. A new ID creates an account; an existing ID signs you in.',
+            skipTutorial: 'SKIP TUTORIAL', loginHelp: 'HOW TO SIGN IN?', pilotId: 'PILOT ID', password: 'PASSWORD',
+            identify: 'SIGN IN', dailyQuests: 'DAILY QUESTS', battlePass: 'BATTLE PASS', alliedNetwork: 'ALLY NETWORK',
+            ranked: 'RANKED CYBER', welcome: 'WELCOME', pilot: 'PILOT', startRun: 'START RUN',
+            shopStats: 'SHOP & STATS', leaderboard: 'WORLD LEADERBOARD', settings: 'SETTINGS',
+            languagePrefix: 'LANGUAGE', musicOn: 'MUSIC: ON', musicOff: 'MUSIC: OFF', volume: 'VOLUME:',
+            rename: 'RENAME', battleCard: 'BATTLE CARD', enableNotifications: 'ENABLE NOTIFICATIONS',
+            disconnect: 'SIGN OUT', back: 'BACK', level: 'LVL', cash: 'CASH', best: 'BEST',
+            notificationsUnsupported: 'NOTIFICATIONS UNSUPPORTED', httpsNotifications: 'OPEN THE GAME VIA HTTPS',
+            notificationsBlocked: 'BLOCKED NOTIFICATIONS', notificationsOn: 'NOTIFICATIONS: ON', notificationsOff: 'NOTIFICATIONS: OFF',
+            shieldActive: 'SHIELD ACTIVE', laserOverheat: 'LASER OVERHEAT', cyberMagnet: 'CYBER MAGNET'
+        };
+        const FR = {
+            gameTitle: 'CYBER-RUNNER 2026', phoenixProtocol: 'PROTOCOLE PHÉNIX',
+            accountTutorial: 'TUTO : TON COMPTE CYBER', tutorialStepOne: 'Choisis ton ID pilote (3 à 16 caractères).',
+            tutorialStepTwo: 'Invente un mot de passe et retiens-le.',
+            tutorialStepThree: 'Appuie sur IDENTIFICATION. Nouvel ID : ton compte est créé. ID existant : tu te reconnectes.',
+            skipTutorial: 'PASSER LE TUTO', loginHelp: 'COMMENT SE CONNECTER ?', pilotId: 'ID PILOTE',
+            password: 'MOT DE PASSE', identify: 'IDENTIFICATION', dailyQuests: 'QUÊTES DU JOUR',
+            battlePass: 'PASS DE COMBAT', alliedNetwork: 'RÉSEAU ALLIÉS', ranked: 'CYBER-CLASSÉ',
+            welcome: 'BIENVENUE', pilot: 'PILOTE', startRun: 'LANCER LE RUN', shopStats: 'BOUTIQUE & STATS',
+            leaderboard: 'CLASSEMENT MONDIAL', settings: 'RÉGLAGES', languagePrefix: 'LANGUE',
+            musicOn: 'MUSIQUE : ON', musicOff: 'MUSIQUE : OFF', volume: 'VOLUME :', rename: 'SE RENOMMER',
+            notificationsUnsupported: 'NOTIFICATIONS NON SUPPORTÉES', httpsNotifications: 'OUVRE LE JEU VIA LE LIEN HTTPS',
+            notificationsBlocked: 'NOTIFICATIONS BLOQUÉES', notificationsOn: 'NOTIFICATIONS : ON', notificationsOff: 'NOTIFICATIONS : OFF',
+            battleCard: 'CARTE DE COMBAT', enableNotifications: 'ACTIVER LES NOTIFICATIONS',
+            disconnect: 'DÉCONNEXION', back: 'RETOUR', level: 'NIV', cash: 'CASH', best: 'RECORD',
+            shieldActive: 'BOUCLIER ACTIF', laserOverheat: 'SURCHAUFFE LASER', cyberMagnet: 'AIMANT CYBER'
+        };
+        const ES = {
+            phoenixProtocol: 'PROTOCOLO FÉNIX', accountTutorial: 'TUTORIAL: TU CUENTA CYBER',
+            tutorialStepOne: 'Elige tu ID de piloto (3–16 caracteres).', tutorialStepTwo: 'Crea una contraseña y recuérdala.',
+            tutorialStepThree: 'Pulsa IDENTIFICAR. Un ID nuevo crea una cuenta; uno existente inicia sesión.',
+            skipTutorial: 'SALTAR TUTORIAL', loginHelp: '¿CÓMO INICIAR SESIÓN?', pilotId: 'ID DE PILOTO',
+            password: 'CONTRASEÑA', identify: 'IDENTIFICARSE', dailyQuests: 'MISIONES DIARIAS',
+            battlePass: 'PASE DE BATALLA', alliedNetwork: 'RED DE ALIADOS', ranked: 'CLASIFICATORIA',
+            welcome: 'BIENVENIDO', pilot: 'PILOTO', startRun: 'INICIAR PARTIDA', shopStats: 'TIENDA Y ESTADÍSTICAS',
+            leaderboard: 'CLASIFICACIÓN MUNDIAL', settings: 'AJUSTES', languagePrefix: 'IDIOMA',
+            musicOn: 'MÚSICA: SÍ', musicOff: 'MÚSICA: NO', volume: 'VOLUMEN:', rename: 'CAMBIAR NOMBRE',
+            battleCard: 'TARJETA DE COMBATE', enableNotifications: 'ACTIVAR NOTIFICACIONES',
+            disconnect: 'CERRAR SESIÓN', back: 'VOLVER', level: 'NIV', cash: 'CRÉDITOS', best: 'RÉCORD',
+            shieldActive: 'ESCUDO ACTIVO', laserOverheat: 'LÁSER SOBRECALENTADO', cyberMagnet: 'IMÁN CYBER'
+        };
+        const DE = {
+            phoenixProtocol: 'PHÖNIX-PROTOKOLL', accountTutorial: 'TUTORIAL: DEIN CYBER-KONTO',
+            tutorialStepOne: 'Wähle deine Piloten-ID (3–16 Zeichen).', tutorialStepTwo: 'Erstelle ein Passwort und merke es dir.',
+            tutorialStepThree: 'Drücke ANMELDEN. Eine neue ID erstellt ein Konto; mit einer vorhandenen meldest du dich an.',
+            skipTutorial: 'TUTORIAL ÜBERSPRINGEN', loginHelp: 'WIE MELDE ICH MICH AN?', pilotId: 'PILOTEN-ID',
+            password: 'PASSWORT', identify: 'ANMELDEN', dailyQuests: 'TÄGLICHE AUFGABEN',
+            battlePass: 'KAMPFPASS', alliedNetwork: 'VERBÜNDETEN-NETZWERK', ranked: 'RANGLISTE',
+            welcome: 'WILLKOMMEN', pilot: 'PILOT', startRun: 'RUN STARTEN', shopStats: 'SHOP & STATS',
+            leaderboard: 'WELTRANGLISTE', settings: 'EINSTELLUNGEN', languagePrefix: 'SPRACHE',
+            musicOn: 'MUSIK: EIN', musicOff: 'MUSIK: AUS', volume: 'LAUTSTÄRKE:', rename: 'UMBENENNEN',
+            battleCard: 'KAMPFKARTE', enableNotifications: 'BENACHRICHTIGUNGEN AKTIVIEREN',
+            disconnect: 'ABMELDEN', back: 'ZURÜCK', level: 'LVL', cash: 'GUTHABEN', best: 'BESTWERT',
+            shieldActive: 'SCHILD AKTIV', laserOverheat: 'LASER ÜBERHITZT', cyberMagnet: 'CYBER-MAGNET'
+        };
+        const IT = {
+            phoenixProtocol: 'PROTOCOLLO FENICE', accountTutorial: 'TUTORIAL: IL TUO ACCOUNT CYBER',
+            tutorialStepOne: 'Scegli il tuo ID pilota (3–16 caratteri).', tutorialStepTwo: 'Crea una password e ricordala.',
+            tutorialStepThree: 'Premi IDENTIFICAZIONE. Un nuovo ID crea un account; uno esistente effettua l’accesso.',
+            skipTutorial: 'SALTA IL TUTORIAL', loginHelp: 'COME ACCEDERE?', pilotId: 'ID PILOTA',
+            password: 'PASSWORD', identify: 'ACCEDI', dailyQuests: 'MISSIONI GIORNALIERE',
+            battlePass: 'PASS BATTAGLIA', alliedNetwork: 'RETE ALLEATI', ranked: 'CLASSIFICATA',
+            welcome: 'BENVENUTO', pilot: 'PILOTA', startRun: 'AVVIA LA PARTITA', shopStats: 'NEGOZIO E STATISTICHE',
+            leaderboard: 'CLASSIFICA MONDIALE', settings: 'IMPOSTAZIONI', languagePrefix: 'LINGUA',
+            musicOn: 'MUSICA: ON', musicOff: 'MUSICA: OFF', volume: 'VOLUME:', rename: 'CAMBIA NOME',
+            battleCard: 'CARTA BATTAGLIA', enableNotifications: 'ATTIVA NOTIFICHE',
+            disconnect: 'DISCONNETTI', back: 'INDIETRO', level: 'LIV', cash: 'CREDITI', best: 'RECORD',
+            shieldActive: 'SCUDO ATTIVO', laserOverheat: 'LASER SURRISCALDATO', cyberMagnet: 'MAGNETE CYBER'
+        };
+        const PT = {
+            phoenixProtocol: 'PROTOCOLO FÊNIX', accountTutorial: 'TUTORIAL: A TUA CONTA CYBER',
+            tutorialStepOne: 'Escolhe o teu ID de piloto (3–16 caracteres).', tutorialStepTwo: 'Cria uma palavra-passe e memoriza-a.',
+            tutorialStepThree: 'Carrega em IDENTIFICAR. Um ID novo cria uma conta; um ID existente inicia sessão.',
+            skipTutorial: 'SALTAR TUTORIAL', loginHelp: 'COMO INICIAR SESSÃO?', pilotId: 'ID DE PILOTO',
+            password: 'PALAVRA-PASSE', identify: 'IDENTIFICAR', dailyQuests: 'MISSÕES DIÁRIAS',
+            battlePass: 'PASSE DE BATALHA', alliedNetwork: 'REDE DE ALIADOS', ranked: 'CLASSIFICADO',
+            welcome: 'BEM-VINDO', pilot: 'PILOTO', startRun: 'INICIAR CORRIDA', shopStats: 'LOJA E ESTATÍSTICAS',
+            leaderboard: 'CLASSIFICAÇÃO MUNDIAL', settings: 'DEFINIÇÕES', languagePrefix: 'IDIOMA',
+            musicOn: 'MÚSICA: LIGADA', musicOff: 'MÚSICA: DESLIGADA', volume: 'VOLUME:', rename: 'MUDAR NOME',
+            battleCard: 'CARTÃO DE COMBATE', enableNotifications: 'ATIVAR NOTIFICAÇÕES',
+            disconnect: 'TERMINAR SESSÃO', back: 'VOLTAR', level: 'NÍV', cash: 'CRÉDITOS', best: 'RECORDE',
+            shieldActive: 'ESCUDO ATIVO', laserOverheat: 'LASER SOBREAQUECIDO', cyberMagnet: 'ÍMAN CYBER'
+        };
+        const NL = {
+            phoenixProtocol: 'FENIKSPROTOCOL', accountTutorial: 'TUTORIAL: JE CYBERACCOUNT',
+            tutorialStepOne: 'Kies je piloot-ID (3–16 tekens).', tutorialStepTwo: 'Maak een wachtwoord en onthoud het.',
+            tutorialStepThree: 'Druk op AANMELDEN. Een nieuwe ID maakt een account aan; een bestaande ID meldt je aan.',
+            skipTutorial: 'TUTORIAL OVERSLAAN', loginHelp: 'HOE MELD IK ME AAN?', pilotId: 'PILOOT-ID',
+            password: 'WACHTWOORD', identify: 'AANMELDEN', dailyQuests: 'DAGELIJKSE MISSIES',
+            battlePass: 'GEVECHTSPAS', alliedNetwork: 'BONDGENOTENNETWERK', ranked: 'GERANGSCHIKT',
+            welcome: 'WELKOM', pilot: 'PILOOT', startRun: 'RUN STARTEN', shopStats: 'WINKEL & STATS',
+            leaderboard: 'WERELDRANGLIJST', settings: 'INSTELLINGEN', languagePrefix: 'TAAL',
+            musicOn: 'MUZIEK: AAN', musicOff: 'MUZIEK: UIT', volume: 'VOLUME:', rename: 'NAAM WIJZIGEN',
+            battleCard: 'GEVECHTSKAART', enableNotifications: 'MELDINGEN INSCHAKELEN',
+            disconnect: 'AFMELDEN', back: 'TERUG', level: 'NIV', cash: 'TEGOED', best: 'RECORD',
+            shieldActive: 'SCHILD ACTIEF', laserOverheat: 'LASER OVERVERHIT', cyberMagnet: 'CYBERMAGNEET'
+        };
+        const PL = {
+            phoenixProtocol: 'PROTOKÓŁ FENIKS', accountTutorial: 'PORADNIK: TWOJE KONTO CYBER',
+            tutorialStepOne: 'Wybierz identyfikator pilota (3–16 znaków).', tutorialStepTwo: 'Utwórz hasło i zapamiętaj je.',
+            tutorialStepThree: 'Naciśnij ZALOGUJ. Nowy identyfikator tworzy konto; istniejący loguje Cię.',
+            skipTutorial: 'POMIŃ PORADNIK', loginHelp: 'JAK SIĘ ZALOGOWAĆ?', pilotId: 'ID PILOTA',
+            password: 'HASŁO', identify: 'ZALOGUJ', dailyQuests: 'CODZIENNE ZADANIA',
+            battlePass: 'PRZEPUSTKA BOJOWA', alliedNetwork: 'SIEĆ SOJUSZNIKÓW', ranked: 'RANKING',
+            welcome: 'WITAJ', pilot: 'PILOT', startRun: 'ROZPOCZNIJ BIEG', shopStats: 'SKLEP I STATYSTYKI',
+            leaderboard: 'ŚWIATOWY RANKING', settings: 'USTAWIENIA', languagePrefix: 'JĘZYK',
+            musicOn: 'MUZYKA: WŁ.', musicOff: 'MUZYKA: WYŁ.', volume: 'GŁOŚNOŚĆ:', rename: 'ZMIENIAJ NAZWĘ',
+            battleCard: 'KARTA WALKI', enableNotifications: 'WŁĄCZ POWIADOMIENIA',
+            disconnect: 'WYLOGUJ', back: 'WRÓĆ', level: 'POZ', cash: 'KREDYTY', best: 'REKORD',
+            shieldActive: 'TARCZA AKTYWNA', laserOverheat: 'PRZEGRZANIE LASERA', cyberMagnet: 'MAGNES CYBER'
+        };
+        const RU = {
+            phoenixProtocol: 'ПРОТОКОЛ ФЕНИКСА', accountTutorial: 'ОБУЧЕНИЕ: ТВОЙ КИБЕР-АККАУНТ',
+            tutorialStepOne: 'Выбери ID пилота (от 3 до 16 символов).', tutorialStepTwo: 'Придумай пароль и запомни его.',
+            tutorialStepThree: 'Нажми «ВОЙТИ». Новый ID создаст аккаунт, существующий — выполнит вход.',
+            skipTutorial: 'ПРОПУСТИТЬ ОБУЧЕНИЕ', loginHelp: 'КАК ВОЙТИ?', pilotId: 'ID ПИЛОТА',
+            password: 'ПАРОЛЬ', identify: 'ВОЙТИ', dailyQuests: 'ЕЖЕДНЕВНЫЕ ЗАДАНИЯ',
+            battlePass: 'БОЕВОЙ ПРОПУСК', alliedNetwork: 'СЕТЬ СОЮЗНИКОВ', ranked: 'РЕЙТИНГ',
+            welcome: 'ДОБРО ПОЖАЛОВАТЬ', pilot: 'ПИЛОТ', startRun: 'НАЧАТЬ ЗАБЕГ', shopStats: 'МАГАЗИН И СТАТИСТИКА',
+            leaderboard: 'МИРОВАЯ ТАБЛИЦА', settings: 'НАСТРОЙКИ', languagePrefix: 'ЯЗЫК',
+            musicOn: 'МУЗЫКА: ВКЛ.', musicOff: 'МУЗЫКА: ВЫКЛ.', volume: 'ГРОМКОСТЬ:', rename: 'СМЕНИТЬ ИМЯ',
+            battleCard: 'БОЕВАЯ КАРТА', enableNotifications: 'ВКЛЮЧИТЬ УВЕДОМЛЕНИЯ',
+            disconnect: 'ВЫЙТИ', back: 'НАЗАД', level: 'УР.', cash: 'КРЕДИТЫ', best: 'РЕКОРД',
+            shieldActive: 'ЩИТ АКТИВЕН', laserOverheat: 'ПЕРЕГРЕВ ЛАЗЕРА', cyberMagnet: 'КИБЕРМАГНИТ'
+        };
+        const JA = {
+            phoenixProtocol: 'フェニックス・プロトコル', accountTutorial: 'チュートリアル：サイバーアカウント',
+            tutorialStepOne: 'パイロットIDを選択してください（3〜16文字）。', tutorialStepTwo: 'パスワードを作成して覚えておいてください。',
+            tutorialStepThree: '「ログイン」を押してください。新しいIDでアカウントを作成し、既存のIDでログインします。',
+            skipTutorial: 'チュートリアルをスキップ', loginHelp: 'ログイン方法', pilotId: 'パイロットID',
+            password: 'パスワード', identify: 'ログイン', dailyQuests: 'デイリークエスト',
+            battlePass: 'バトルパス', alliedNetwork: '同盟ネットワーク', ranked: 'ランクマッチ',
+            welcome: 'ようこそ', pilot: 'パイロット', startRun: 'ランを開始', shopStats: 'ショップ＆統計',
+            leaderboard: '世界ランキング', settings: '設定', languagePrefix: '言語',
+            musicOn: '音楽：オン', musicOff: '音楽：オフ', volume: '音量：', rename: '名前を変更',
+            battleCard: 'バトルカード', enableNotifications: '通知を有効にする',
+            disconnect: 'ログアウト', back: '戻る', level: 'レベル', cash: 'クレジット', best: 'ベスト',
+            shieldActive: 'シールド展開中', laserOverheat: 'レーザー過熱', cyberMagnet: 'サイバーマグネット'
+        };
+        const KO = {
+            phoenixProtocol: '피닉스 프로토콜', accountTutorial: '튜토리얼: 사이버 계정',
+            tutorialStepOne: '파일럿 ID를 선택하세요(3~16자).', tutorialStepTwo: '비밀번호를 만들고 기억하세요.',
+            tutorialStepThree: '로그인을 누르세요. 새 ID는 계정을 만들고, 기존 ID는 로그인합니다.',
+            skipTutorial: '튜토리얼 건너뛰기', loginHelp: '로그인 방법', pilotId: '파일럿 ID',
+            password: '비밀번호', identify: '로그인', dailyQuests: '일일 퀘스트',
+            battlePass: '배틀 패스', alliedNetwork: '동맹 네트워크', ranked: '랭크 모드',
+            welcome: '환영합니다', pilot: '파일럿', startRun: '런 시작', shopStats: '상점 및 통계',
+            leaderboard: '월드 랭킹', settings: '설정', languagePrefix: '언어',
+            musicOn: '음악: 켜짐', musicOff: '음악: 꺼짐', volume: '볼륨:', rename: '이름 변경',
+            battleCard: '배틀 카드', enableNotifications: '알림 켜기',
+            disconnect: '로그아웃', back: '뒤로', level: '레벨', cash: '크레딧', best: '최고 기록',
+            shieldActive: '실드 활성화', laserOverheat: '레이저 과열', cyberMagnet: '사이버 자석'
+        };
+        const ZH = {
+            phoenixProtocol: '凤凰协议', accountTutorial: '教程：赛博账号',
+            tutorialStepOne: '选择飞行员 ID（3–16 个字符）。', tutorialStepTwo: '创建并记住你的密码。',
+            tutorialStepThree: '点击“登录”。新 ID 会创建账号，已有 ID 则直接登录。',
+            skipTutorial: '跳过教程', loginHelp: '如何登录？', pilotId: '飞行员 ID',
+            password: '密码', identify: '登录', dailyQuests: '每日任务',
+            battlePass: '战斗通行证', alliedNetwork: '盟友网络', ranked: '排位模式',
+            welcome: '欢迎', pilot: '飞行员', startRun: '开始奔跑', shopStats: '商店与统计',
+            leaderboard: '全球排行榜', settings: '设置', languagePrefix: '语言',
+            musicOn: '音乐：开', musicOff: '音乐：关', volume: '音量：', rename: '更改名称',
+            battleCard: '战斗卡片', enableNotifications: '开启通知',
+            disconnect: '退出登录', back: '返回', level: '等级', cash: '积分', best: '最佳成绩',
+            shieldActive: '护盾已启动', laserOverheat: '激光过热', cyberMagnet: '赛博磁铁'
+        };
+        const TRANSLATIONS = { fr: FR, en: EN, es: Object.assign({}, EN, ES), de: Object.assign({}, EN, DE),
+            it: Object.assign({}, EN, IT), pt: Object.assign({}, EN, PT), nl: Object.assign({}, EN, NL),
+            pl: Object.assign({}, EN, PL), ru: Object.assign({}, EN, RU), ja: Object.assign({}, EN, JA),
+            ko: Object.assign({}, EN, KO), zh: Object.assign({}, EN, ZH) };
+        const EXTRA_TRANSLATIONS = {
+            ar: { accountTutorial: 'دليل الحساب', pilotId: 'معرّف الطيار', password: 'كلمة المرور', identify: 'تسجيل الدخول', dailyQuests: 'المهام اليومية', battlePass: 'بطاقة المعركة', alliedNetwork: 'شبكة الحلفاء', ranked: 'اللعب المصنّف', welcome: 'مرحبًا', pilot: 'الطيار', startRun: 'ابدأ الجولة', shopStats: 'المتجر والإحصاءات', leaderboard: 'التصنيف العالمي', settings: 'الإعدادات', languagePrefix: 'اللغة', musicOn: 'الموسيقى: تشغيل', musicOff: 'الموسيقى: إيقاف', volume: 'مستوى الصوت:', rename: 'تغيير الاسم', battleCard: 'بطاقة المعركة', disconnect: 'تسجيل الخروج', back: 'رجوع' },
+            hi: { accountTutorial: 'ट्यूटोरियल: आपका साइबर खाता', pilotId: 'पायलट आईडी', password: 'पासवर्ड', identify: 'लॉग इन करें', dailyQuests: 'दैनिक मिशन', battlePass: 'बैटल पास', alliedNetwork: 'सहयोगी नेटवर्क', ranked: 'रैंक्ड मोड', welcome: 'स्वागत है', pilot: 'पायलट', startRun: 'रन शुरू करें', shopStats: 'दुकान और आँकड़े', leaderboard: 'विश्व लीडरबोर्ड', settings: 'सेटिंग्स', languagePrefix: 'भाषा', musicOn: 'संगीत: चालू', musicOff: 'संगीत: बंद', volume: 'आवाज़:', rename: 'नाम बदलें', battleCard: 'बैटल कार्ड', disconnect: 'लॉग आउट', back: 'वापस' },
+            tr: { accountTutorial: 'EĞİTİM: SİBER HESABIN', pilotId: 'PİLOT KİMLİĞİ', password: 'ŞİFRE', identify: 'GİRİŞ YAP', dailyQuests: 'GÜNLÜK GÖREVLER', battlePass: 'SAVAŞ BİLETİ', alliedNetwork: 'MÜTTEFİK AĞI', ranked: 'SIRALAMALI', welcome: 'HOŞ GELDİN', pilot: 'PİLOT', startRun: 'TURU BAŞLAT', shopStats: 'MAĞAZA VE İSTATİSTİKLER', leaderboard: 'DÜNYA SIRALAMASI', settings: 'AYARLAR', languagePrefix: 'DİL', musicOn: 'MÜZİK: AÇIK', musicOff: 'MÜZİK: KAPALI', volume: 'SES:', rename: 'ADINI DEĞİŞTİR', battleCard: 'SAVAŞ KARTI', disconnect: 'ÇIKIŞ YAP', back: 'GERİ' },
+            uk: { accountTutorial: 'ПОСІБНИК: ТВІЙ КІБЕРПРОФІЛЬ', pilotId: 'ID ПІЛОТА', password: 'ПАРОЛЬ', identify: 'УВІЙТИ', dailyQuests: 'ЩОДЕННІ ЗАВДАННЯ', battlePass: 'БОЙОВИЙ ПРОПУСК', alliedNetwork: 'МЕРЕЖА СОЮЗНИКІВ', ranked: 'РЕЙТИНГОВИЙ РЕЖИМ', welcome: 'ВІТАЄМО', pilot: 'ПІЛОТ', startRun: 'ПОЧАТИ ЗАБІГ', shopStats: 'КРАМНИЦЯ ТА СТАТИСТИКА', leaderboard: 'СВІТОВИЙ РЕЙТИНГ', settings: 'НАЛАШТУВАННЯ', languagePrefix: 'МОВА', musicOn: 'МУЗИКА: УВІМК.', musicOff: 'МУЗИКА: ВИМК.', volume: 'ГУЧНІСТЬ:', rename: 'ЗМІНИТИ ІМ’Я', battleCard: 'БОЙОВА КАРТКА', disconnect: 'ВИЙТИ', back: 'НАЗАД' },
+            id: { accountTutorial: 'TUTORIAL: AKUN CYBER', pilotId: 'ID PILOT', password: 'KATA SANDI', identify: 'MASUK', dailyQuests: 'MISI HARIAN', battlePass: 'PASS PERTEMPURAN', alliedNetwork: 'JARINGAN SEKUTU', ranked: 'MODE PERINGKAT', welcome: 'SELAMAT DATANG', pilot: 'PILOT', startRun: 'MULAI LARIAN', shopStats: 'TOKO & STATISTIK', leaderboard: 'PAPAN PERINGKAT DUNIA', settings: 'PENGATURAN', languagePrefix: 'BAHASA', musicOn: 'MUSIK: AKTIF', musicOff: 'MUSIK: MATI', volume: 'VOLUME:', rename: 'GANTI NAMA', battleCard: 'KARTU PERTEMPURAN', disconnect: 'KELUAR', back: 'KEMBALI' },
+            sv: { accountTutorial: 'GUIDE: DITT CYBERKONTO', pilotId: 'PILOT-ID', password: 'LÖSENORD', identify: 'LOGGA IN', dailyQuests: 'DAGLIGA UPPDRAG', battlePass: 'STRIDSPASS', alliedNetwork: 'ALLIANSNÄTVERK', ranked: 'RANKAT LÄGE', welcome: 'VÄLKOMMEN', pilot: 'PILOT', startRun: 'STARTA RUN', shopStats: 'BUTIK OCH STATISTIK', leaderboard: 'VÄRLDSRANKING', settings: 'INSTÄLLNINGAR', languagePrefix: 'SPRÅK', musicOn: 'MUSIK: PÅ', musicOff: 'MUSIK: AV', volume: 'VOLYM:', rename: 'BYT NAMN', battleCard: 'STRIDSKORT', disconnect: 'LOGGA UT', back: 'TILLBAKA' },
+            el: { accountTutorial: 'ΟΔΗΓΟΣ: Ο ΛΟΓΑΡΙΑΣΜΟΣ CYBER', pilotId: 'ID ΠΙΛΟΤΟΥ', password: 'ΚΩΔΙΚΟΣ', identify: 'ΣΥΝΔΕΣΗ', dailyQuests: 'ΗΜΕΡΗΣΙΕΣ ΑΠΟΣΤΟΛΕΣ', battlePass: 'ΜΑΧΗΤΙΚΟ ΠΑΣΟ', alliedNetwork: 'ΔΙΚΤΥΟ ΣΥΜΜΑΧΩΝ', ranked: 'ΚΑΤΑΤΑΞΗ', welcome: 'ΚΑΛΩΣ ΗΡΘΕΣ', pilot: 'ΠΙΛΟΤΟΣ', startRun: 'ΕΝΑΡΞΗ RUN', shopStats: 'ΚΑΤΑΣΤΗΜΑ & ΣΤΑΤΙΣΤΙΚΑ', leaderboard: 'ΠΑΓΚΟΣΜΙΑ ΚΑΤΑΤΑΞΗ', settings: 'ΡΥΘΜΙΣΕΙΣ', languagePrefix: 'ΓΛΩΣΣΑ', musicOn: 'ΜΟΥΣΙΚΗ: ΕΝΕΡΓΗ', musicOff: 'ΜΟΥΣΙΚΗ: ΑΝΕΝΕΡΓΗ', volume: 'ΕΝΤΑΣΗ:', rename: 'ΑΛΛΑΓΗ ΟΝΟΜΑΤΟΣ', battleCard: 'ΚΑΡΤΑ ΜΑΧΗΣ', disconnect: 'ΑΠΟΣΥΝΔΕΣΗ', back: 'ΠΙΣΩ' },
+            vi: { accountTutorial: 'HƯỚNG DẪN: TÀI KHOẢN CYBER', pilotId: 'ID PHI CÔNG', password: 'MẬT KHẨU', identify: 'ĐĂNG NHẬP', dailyQuests: 'NHIỆM VỤ HẰNG NGÀY', battlePass: 'VÉ CHIẾN ĐẤU', alliedNetwork: 'MẠNG LƯỚI ĐỒNG MINH', ranked: 'XẾP HẠNG', welcome: 'CHÀO MỪNG', pilot: 'PHI CÔNG', startRun: 'BẮT ĐẦU RUN', shopStats: 'CỬA HÀNG & THỐNG KÊ', leaderboard: 'BẢNG XẾP HẠNG THẾ GIỚI', settings: 'CÀI ĐẶT', languagePrefix: 'NGÔN NGỮ', musicOn: 'NHẠC: BẬT', musicOff: 'NHẠC: TẮT', volume: 'ÂM LƯỢNG:', rename: 'ĐỔI TÊN', battleCard: 'THẺ CHIẾN ĐẤU', disconnect: 'ĐĂNG XUẤT', back: 'QUAY LẠI' }
+        };
+        Object.keys(EXTRA_TRANSLATIONS).forEach(function (code) {
+            TRANSLATIONS[code] = Object.assign({}, EN, EXTRA_TRANSLATIONS[code]);
+        });
+        const SECONDARY_TRANSLATIONS = {
+            en: {
+                runModeTitle: 'CHOOSE A RUN', runModeSubtitle: 'SELECT YOUR RUN PROTOCOL', basicRun: 'BASIC RUN',
+                basicDescription: 'Play freely and beat your personal best.', rankedRun: 'RANKED RUN',
+                rankedDescription: 'Turn your score into Ranked points and unlock new ranks.', cancel: 'CANCEL',
+                next: 'NEXT', briefingEnd: 'BRIEFING COMPLETE', restartTutorial: 'RESTART TUTORIAL',
+                launchSimulation: 'START SIMULATION', unitDisconnected: 'UNIT DISCONNECTED', finalScore: 'FINAL SCORE',
+                personalRecord: 'PERSONAL BEST', xpGained: 'XP EARNED', cashGained: 'CREDITS EARNED',
+                revives: 'REVIVES', newSimulation: 'START NEW SIMULATION', returnHub: 'RETURN TO CENTRAL HUB',
+                movementTitle: 'MOVEMENT', movementText: 'Drag your finger to control the runner.',
+                obstaclesTitle: 'OBSTACLES', obstaclesText: 'Avoid the red structures.',
+                omniBossTitle: 'OMNI BOSS', omniBossText: 'Stay aligned with the core to trigger the automatic laser.'
+            },
+            fr: {
+                runModeTitle: 'CHOIX DE SIMULATION', runModeSubtitle: 'SÉLECTIONNE TON PROTOCOLE DE RUN',
+                basicRun: 'PARTIE BASIQUE', basicDescription: 'Joue librement et améliore ton record personnel.',
+                rankedRun: 'PARTIE CLASSÉE', rankedDescription: 'Ton score devient des points Cyber-Classé et peut débloquer un nouveau rang.',
+                cancel: 'ANNULER', next: 'SUIVANT', briefingEnd: 'FIN DU BRIEFING', restartTutorial: 'REFAIRE LE TUTORIEL',
+                launchSimulation: 'LANCER LA SIMULATION', unitDisconnected: 'UNITÉ DÉCONNECTÉE', finalScore: 'SCORE FINAL',
+                personalRecord: 'RECORD PERSONNEL', xpGained: 'XP ACQUIS', cashGained: 'CRÉDITS ACQUIS',
+                revives: 'RENAISSANCES', newSimulation: 'INITIER NOUVELLE SIMULATION', returnHub: 'RETOUR AU HUB CENTRAL',
+                movementTitle: 'MOUVEMENT', movementText: 'Glisse ton doigt pour contrôler le runner.',
+                obstaclesTitle: 'OBSTACLES', obstaclesText: 'Évite impérativement les structures rouges.',
+                omniBossTitle: 'BOSS OMNI', omniBossText: 'Reste aligné sur le Noyau pour déclencher le laser automatique.'
+            },
+            es: {
+                runModeTitle: 'ELIGE UNA PARTIDA', runModeSubtitle: 'SELECCIONA TU PROTOCOLO',
+                basicRun: 'PARTIDA NORMAL', basicDescription: 'Juega libremente y supera tu récord personal.',
+                rankedRun: 'PARTIDA CLASIFICATORIA', rankedDescription: 'Convierte tu puntuación en puntos de rango y desbloquea nuevos niveles.',
+                cancel: 'CANCELAR', next: 'SIGUIENTE', briefingEnd: 'FIN DEL INFORME', restartTutorial: 'REPETIR TUTORIAL',
+                launchSimulation: 'INICIAR SIMULACIÓN', unitDisconnected: 'UNIDAD DESCONECTADA', finalScore: 'PUNTUACIÓN FINAL',
+                personalRecord: 'RÉCORD PERSONAL', xpGained: 'XP OBTENIDA', cashGained: 'CRÉDITOS OBTENIDOS',
+                revives: 'RENACIMIENTOS', newSimulation: 'INICIAR NUEVA SIMULACIÓN', returnHub: 'VOLVER AL CENTRO',
+                movementTitle: 'MOVIMIENTO', movementText: 'Desliza el dedo para controlar al corredor.',
+                obstaclesTitle: 'OBSTÁCULOS', obstaclesText: 'Evita las estructuras rojas.',
+                omniBossTitle: 'JEFE OMNI', omniBossText: 'Mantente alineado con el núcleo para activar el láser automático.'
+            },
+            de: {
+                runModeTitle: 'RUN AUSWÄHLEN', runModeSubtitle: 'WÄHLE DEIN RUN-PROTOKOLL',
+                basicRun: 'BASIS-RUN', basicDescription: 'Spiele frei und verbessere deinen persönlichen Rekord.',
+                rankedRun: 'RANGLISTEN-RUN', rankedDescription: 'Verwandle Punkte in Ranglistenpunkte und schalte neue Ränge frei.',
+                cancel: 'ABBRECHEN', next: 'WEITER', briefingEnd: 'BRIEFING BEENDET', restartTutorial: 'TUTORIAL WIEDERHOLEN',
+                launchSimulation: 'SIMULATION STARTEN', unitDisconnected: 'EINHEIT GETRENNT', finalScore: 'ENDPUNKTZAHL',
+                personalRecord: 'PERSÖNLICHER REKORD', xpGained: 'ERHALTENE XP', cashGained: 'ERHALTENE KREDITE',
+                revives: 'WIEDERBELEBUNGEN', newSimulation: 'NEUE SIMULATION STARTEN', returnHub: 'ZURÜCK ZUR ZENTRALE'
+            },
+            it: {
+                runModeTitle: 'SCEGLI UNA PARTITA', runModeSubtitle: 'SELEZIONA IL PROTOCOLLO',
+                basicRun: 'PARTITA BASE', basicDescription: 'Gioca liberamente e migliora il tuo record personale.',
+                rankedRun: 'PARTITA CLASSIFICATA', rankedDescription: 'Trasforma il punteggio in punti classifica e sblocca nuovi ranghi.',
+                cancel: 'ANNULLA', next: 'AVANTI', briefingEnd: 'BRIEFING TERMINATO', restartTutorial: 'RIPETI IL TUTORIAL',
+                launchSimulation: 'AVVIA LA SIMULAZIONE', unitDisconnected: 'UNITÀ DISCONNESSA', finalScore: 'PUNTEGGIO FINALE',
+                personalRecord: 'RECORD PERSONALE', xpGained: 'XP OTTENUTI', cashGained: 'CREDITI OTTENUTI',
+                revives: 'RINASCITE', newSimulation: 'AVVIA NUOVA SIMULAZIONE', returnHub: 'TORNA ALL’HUB CENTRALE'
+            },
+            pt: {
+                runModeTitle: 'ESCOLHE UMA PARTIDA', runModeSubtitle: 'SELECIONA O TEU PROTOCOLO',
+                basicRun: 'PARTIDA BÁSICA', basicDescription: 'Joga livremente e melhora o teu recorde pessoal.',
+                rankedRun: 'PARTIDA CLASSIFICADA', rankedDescription: 'Transforma a pontuação em pontos de classificação e desbloqueia novos níveis.',
+                cancel: 'CANCELAR', next: 'SEGUINTE', briefingEnd: 'FIM DO BRIEFING', restartTutorial: 'REPETIR TUTORIAL',
+                launchSimulation: 'INICIAR SIMULAÇÃO', unitDisconnected: 'UNIDADE DESCONECTADA', finalScore: 'PONTUAÇÃO FINAL',
+                personalRecord: 'RECORDE PESSOAL', xpGained: 'XP OBTIDO', cashGained: 'CRÉDITOS OBTIDOS',
+                revives: 'RENASCIMENTOS', newSimulation: 'INICIAR NOVA SIMULAÇÃO', returnHub: 'VOLTAR AO CENTRO'
+            },
+            ru: {
+                runModeTitle: 'ВЫБОР ЗАБЕГА', runModeSubtitle: 'ВЫБЕРИ ПРОТОКОЛ ЗАБЕГА',
+                basicRun: 'ОБЫЧНЫЙ ЗАБЕГ', basicDescription: 'Играй свободно и улучшай личный рекорд.',
+                rankedRun: 'РЕЙТИНГОВЫЙ ЗАБЕГ', rankedDescription: 'Получай очки рейтинга и открывай новые звания.',
+                cancel: 'ОТМЕНА', next: 'ДАЛЕЕ', briefingEnd: 'БРИФИНГ ЗАВЕРШЁН', restartTutorial: 'ПОВТОРИТЬ ОБУЧЕНИЕ',
+                launchSimulation: 'НАЧАТЬ СИМУЛЯЦИЮ', unitDisconnected: 'СВЯЗЬ С ЮНИТОМ ПОТЕРЯНА', finalScore: 'ИТОГОВЫЙ СЧЁТ',
+                personalRecord: 'ЛИЧНЫЙ РЕКОРД', xpGained: 'ПОЛУЧЕНО XP', cashGained: 'ПОЛУЧЕНО КРЕДИТОВ',
+                revives: 'ВОЗРОЖДЕНИЯ', newSimulation: 'НАЧАТЬ НОВУЮ СИМУЛЯЦИЮ', returnHub: 'ВЕРНУТЬСЯ В ЦЕНТР'
+            },
+            ja: {
+                runModeTitle: 'ランを選択', runModeSubtitle: 'ランのプロトコルを選んでください',
+                basicRun: 'ベーシックラン', basicDescription: '自由にプレイして自己ベストを更新しよう。',
+                rankedRun: 'ランク戦', rankedDescription: 'スコアでランクポイントを獲得し、新しいランクを解放しよう。',
+                cancel: 'キャンセル', next: '次へ', briefingEnd: 'ブリーフィング終了', restartTutorial: 'チュートリアルをやり直す',
+                launchSimulation: 'シミュレーション開始', unitDisconnected: 'ユニットとの接続が切れました', finalScore: '最終スコア',
+                personalRecord: '自己ベスト', xpGained: '獲得XP', cashGained: '獲得クレジット',
+                revives: '復活回数', newSimulation: '新しいシミュレーションを開始', returnHub: '中央ハブに戻る'
+            },
+            zh: {
+                runModeTitle: '选择模式', runModeSubtitle: '选择奔跑协议',
+                basicRun: '普通模式', basicDescription: '自由游玩，刷新个人最佳成绩。',
+                rankedRun: '排位模式', rankedDescription: '获得排位积分并解锁新的段位。',
+                cancel: '取消', next: '下一步', briefingEnd: '简报结束', restartTutorial: '重新开始教程',
+                launchSimulation: '开始模拟', unitDisconnected: '单位已断开连接', finalScore: '最终得分',
+                personalRecord: '个人最佳', xpGained: '获得经验', cashGained: '获得积分',
+                revives: '复活次数', newSimulation: '开始新一轮模拟', returnHub: '返回中央大厅'
+            }
+        };
+        Object.keys(TRANSLATIONS).forEach(function (code) {
+            Object.assign(TRANSLATIONS[code], SECONDARY_TRANSLATIONS.en, SECONDARY_TRANSLATIONS[code] || {});
+        });
+        let activeLanguage = 'fr';
+        let pickerMode = 'startup';
+
+        function gameText(key) {
+            const bundle = TRANSLATIONS[activeLanguage] || EN;
+            return bundle[key] || EN[key] || key;
+        }
+        window.gameText = gameText;
+
+        function drawLanguageOptions() {
+            const grid = document.getElementById('language-grid');
+            if (!grid) return;
+            grid.innerHTML = LANGUAGES.map(function (language) {
+                const chosen = language.code === activeLanguage ? ' selected' : '';
+                return '<button type="button" class="language-option' + chosen + '" lang="' + language.code + '" onclick="selectGameLanguage(\'' + language.code + '\')" aria-label="' + language.name + '">' +
+                    '<span class="css-flag flag-' + language.flag + '" aria-hidden="true"></span><span class="language-name">' + language.name + '</span></button>';
+            }).join('');
+        }
+
+        function applyGameLanguage(code) {
+            const language = LANGUAGES.find(function (item) { return item.code === code; }) || LANGUAGES[0];
+            activeLanguage = TRANSLATIONS[language.code] ? language.code : (language.code === 'pt-BR' ? 'pt' : 'en');
+            document.documentElement.lang = language.code;
+            document.documentElement.dir = language.code === 'ar' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-i18n]').forEach(function (element) {
+                const translated = gameText(element.getAttribute('data-i18n'));
+                if (translated) element.textContent = translated;
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(function (element) {
+                element.setAttribute('placeholder', gameText(element.getAttribute('data-i18n-placeholder')));
+            });
+            const languageButton = document.getElementById('btn-language-settings');
+            if (languageButton) languageButton.textContent = gameText('languagePrefix') + ' : ' + language.name;
+            const musicButton = document.getElementById('btn-music-toggle');
+            if (musicButton) musicButton.textContent = gameText(musicPlaying ? 'musicOn' : 'musicOff');
+            if (typeof refreshNotifBtn === 'function') refreshNotifBtn();
+            drawLanguageOptions();
+        }
+        window.applyGameLanguage = applyGameLanguage;
+
+        window.openLanguagePicker = function (mode) {
+            pickerMode = mode === 'settings' ? 'settings' : 'startup';
+            drawLanguageOptions();
+            document.getElementById('language-picker').classList.add('visible');
+        };
+        window.selectGameLanguage = function (code) {
+            if (!LANGUAGES.some(function (item) { return item.code === code; })) return;
+            try { localStorage.setItem('cr_language', code); } catch (e) {}
+            applyGameLanguage(code);
+            document.getElementById('language-picker').classList.remove('visible');
+            if (pickerMode === 'startup') document.getElementById('intro-screen').classList.add('intro-hidden');
+        };
+
+        function waveText(element) {
+            const text = element.getAttribute('data-wave-text') || '';
+            element.textContent = '';
+            Array.from(text).forEach(function (character, index) {
+                const letter = document.createElement('span');
+                letter.className = 'intro-letter';
+                letter.style.setProperty('--delay', (index * 58) + 'ms');
+                letter.textContent = character;
+                element.appendChild(letter);
+            });
+        }
+        function showIntroStage(stage) {
+            stage.classList.remove('intro-exit');
+            stage.querySelectorAll('[data-wave-text]').forEach(waveText);
+            stage.classList.add('intro-visible');
+        }
+        function hideIntroStage(stage) {
+            stage.classList.add('intro-exit');
+            window.setTimeout(function () {
+                stage.classList.remove('intro-visible', 'intro-exit');
+            }, 650);
+        }
+        function beginGameIntro() {
+            let savedLanguage = '';
+            try { savedLanguage = localStorage.getItem('cr_language') || ''; } catch (e) {}
+            const exists = LANGUAGES.some(function (item) { return item.code === savedLanguage; });
+            applyGameLanguage(exists ? savedLanguage : 'fr');
+            try {
+                const rememberedUser = localStorage.getItem('cr_last_user');
+                const savedAccounts = JSON.parse(localStorage.getItem('cr_db') || '{}');
+                if (rememberedUser && savedAccounts && savedAccounts[rememberedUser]) {
+                    loadAccount(rememberedUser, savedAccounts[rememberedUser]);
+                    document.addEventListener('pointerdown', function resumeRememberedAudio() {
+                        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(function () {});
+                    }, { once: true });
+                } else if (rememberedUser) {
+                    localStorage.removeItem('cr_last_user');
+                }
+            } catch (e) {
+                try { localStorage.removeItem('cr_last_user'); } catch (ignored) {}
+            }
+            const creditStage = document.getElementById('intro-credit-stage');
+            const titleStage = document.getElementById('intro-title-stage');
+            window.setTimeout(function () { showIntroStage(creditStage); }, 180);
+            window.setTimeout(function () { hideIntroStage(creditStage); }, 1900);
+            window.setTimeout(function () { showIntroStage(titleStage); }, 2560);
+            window.setTimeout(function () { hideIntroStage(titleStage); }, 4380);
+            window.setTimeout(function () {
+                document.getElementById('intro-screen').classList.add('intro-hidden');
+                if (!exists) window.openLanguagePicker('startup');
+            }, 5050);
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', beginGameIntro, { once: true });
+        else beginGameIntro();
+    })();
     </script>
 </body>
 </html>
