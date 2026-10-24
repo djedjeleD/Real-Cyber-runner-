@@ -3416,6 +3416,40 @@ function saveQuestsData(dateStr) {
     localStorage.setItem('cr_quests_' + currentUser, JSON.stringify({ date: today, quests: dailyQuests }));
 }
 
+let questProgressSaveTimer = null;
+let questProgressDirty = false;
+
+function flushQuestProgress() {
+    if (questProgressSaveTimer !== null) {
+        clearTimeout(questProgressSaveTimer);
+        questProgressSaveTimer = null;
+    }
+    if (!questProgressDirty) return;
+    questProgressDirty = false;
+    saveQuestsData();
+}
+
+function scheduleQuestProgressSave(immediate = false) {
+    questProgressDirty = true;
+    if (immediate) {
+        flushQuestProgress();
+        return;
+    }
+    if (questProgressSaveTimer !== null) return;
+    questProgressSaveTimer = setTimeout(() => {
+        questProgressSaveTimer = null;
+        if (!questProgressDirty) return;
+        questProgressDirty = false;
+        saveQuestsData();
+    }, 1000);
+}
+
+window.addEventListener('pagehide', flushQuestProgress);
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') flushQuestProgress();
+});
+
+
 function updateQuestTimerBadge() {
     let now = new Date();
     let midnight = new Date();
@@ -3472,6 +3506,7 @@ function showQuestToast(title, rewardText) {
 function trackQuestProgress(type, amount, isAbsolute = false) {
     if (!dailyQuests || dailyQuests.length === 0) return;
     let changed = false;
+    let questCompleted = false;
 
     dailyQuests.forEach(q => {
         if (!q.claimed && q.id.startsWith(type)) {
@@ -3488,6 +3523,7 @@ function trackQuestProgress(type, amount, isAbsolute = false) {
             // DÉCLENCHEMENT DU SUCCÈS MINECRAFT !
             if (prev < q.target && q.current >= q.target && !q.notified) {
                 q.notified = true;
+                questCompleted = true;
                 showQuestToast(q.title, `${q.cash} ${CC_ICON} + ${q.xpBonus} XP`);
             }
 
@@ -3495,7 +3531,7 @@ function trackQuestProgress(type, amount, isAbsolute = false) {
         }
     });
 
-    if (changed) saveQuestsData();
+    if (changed) scheduleQuestProgressSave(questCompleted);
 }
 
 

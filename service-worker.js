@@ -1,5 +1,5 @@
-const CACHE_NAME = 'cyberrunner-v2';
-const PREVIOUS_CACHE = 'cyberrunner-v1';
+const CACHE_NAME = 'cyberrunner-v3';
+const PREVIOUS_CACHE = 'cyberrunner-v2';
 const ASSETS = ['./', './index.html', './icon.png'];
 
 self.addEventListener('install', (event) => {
