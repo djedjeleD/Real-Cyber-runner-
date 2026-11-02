@@ -1,0 +1,17 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.djedjeledj.cyberrunner.v2",
+      "sha256_cert_fingerprints": [
+        "91:3B:04:8E:6E:1C:07:4C:58:91:F6:B4:BF:09:44:C4:2A:F1:9A:DF:9E:0F:50:11:92:34:99:C5:62:2F:A4:57",
+        "30:87:10:87:8D:D9:51:2C:91:DB:80:31:EB:D8:22:26:88:4D:91:18:66:07:57:AD:F6:12:51:B3:13:8E:FB:95",
+        "9A:56:B1:1C:33:38:A2:26:FF:63:FD:97:2F:19:0D:55:54:D8:9B:FA:02:D5:2E:52:28:BF:FC:B5:91:B9:6E:C7"
+      ]
+    }
+  }
+]
